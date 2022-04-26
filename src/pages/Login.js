@@ -1,9 +1,19 @@
 import styled from "styled-components";
 import CircleAnimation from "../Animations/LoginCircleAnimi";
+import bg from "../imgs/login/loginBG.jpg";
+import { mobile } from "../responsive";
 
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
+  position: relative;
+`;
+
+const BackgroundImage = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 `;
 
 const Content = styled.div`
@@ -12,6 +22,10 @@ const Content = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
 `;
 
 const Wrapper = styled.div`
@@ -20,6 +34,7 @@ const Wrapper = styled.div`
   /* background-color: #ffffff82; */
   background-color: #ffffffb1;
   border-radius: 20px;
+  ${mobile({ width: "75%" })}
 `;
 
 const TitleContainer = styled.div`
@@ -45,7 +60,7 @@ const Form = styled.form`
 const Input = styled.input`
   flex: 1;
   min-width: 40%;
-  margin: 20px 10px 0px 0px;
+  margin-top: 20px;
   padding: 10px;
   border-radius: 7px;
   border: none;
@@ -93,6 +108,7 @@ const Link = styled.a`
 function Login() {
   return (
     <Container>
+      <BackgroundImage src={bg} />
       <Content>
         <Wrapper>
           <TitleContainer>
