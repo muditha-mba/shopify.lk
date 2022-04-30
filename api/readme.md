@@ -1,0 +1,3 @@
+# E-Commerce API
+
+Built using modern technologies: node.js, express, mongoDB, mongoose, Strip, JWT and more...
