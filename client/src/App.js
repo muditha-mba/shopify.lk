@@ -7,6 +7,7 @@ import Cart from "./pages/Cart";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Success from "./pages/Success";
 import { useSelector } from "react-redux";
+import PageNotFound from "./pages/PageNotFound";
 
 const App = () => {
   /* const currentUser = JSON.parse(
@@ -15,14 +16,13 @@ const App = () => {
   console.log("current user: ", currentUser); */
 
   const user = useSelector((state) => state.user.currentUser);
-  console.log("user: ", user);
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="products/:category" element={<ProductList />} />
         <Route path="product/:id" element={<Product />} />
-        <Route path="cart" element={<Cart />} />
+        <Route path="cart" element={user ? <Cart /> : <Navigate to={"/"} />} />
         <Route
           path="login"
           element={user ? <Navigate to={"/"} /> : <Login />}
@@ -32,6 +32,7 @@ const App = () => {
           element={user ? <Navigate to={"/"} /> : <Register />}
         />
         <Route path="success" element={<Success />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );

@@ -5,6 +5,7 @@ import bg from "../imgs/login/loginBG.jpg";
 import { mobile } from "../responsive";
 import { loginAPICall } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -102,17 +103,18 @@ const Button = styled.button`
   }
 `;
 
-const LinkContainer = styled.div`
+const ConnectContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 10px 0px;
 `;
 
-const Link = styled.a`
+const Connect = styled.a`
   font-size: 14px;
   text-decoration: underline;
   cursor: pointer;
+  color: black;
 `;
 
 const Error = styled.span`
@@ -156,10 +158,14 @@ function Login() {
               </Button>
               {error && <Error>Something Went Wrong Please Try again.</Error>}
             </ButtonContainer>
-            <LinkContainer>
-              <Link>Forgot Password?</Link>
-              <Link>Create an account</Link>
-            </LinkContainer>
+            <ConnectContainer>
+              <Link to={"/"}>
+                <Connect>Go Back Home</Connect>
+              </Link>
+              <Link to={"/register"}>
+                <Connect>Create an account</Connect>
+              </Link>
+            </ConnectContainer>
           </Form>
         </Wrapper>
       </Content>

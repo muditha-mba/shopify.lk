@@ -1,7 +1,10 @@
+import { useState } from "react";
 import styled from "styled-components";
 import CircleAnimation from "../Animations/RegisterCircleAnimi";
 import bg from "../imgs/register/regBG.jpg";
 import { mobile } from "../responsive";
+import { publicRequest } from "../requestMethods";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -73,6 +76,19 @@ const ButtonContainer = styled.div`
   align-items: center;
   margin-top: 30px;
   margin-bottom: 10px;
+  flex-direction: column;
+`;
+
+const Error = styled.span`
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+`;
+
+const Success = styled.span`
+  margin-top: 10px;
+  color: #20d75d;
+  font-size: 14px;
 `;
 
 const Button = styled.button`
@@ -92,7 +108,87 @@ const Button = styled.button`
   }
 `;
 
+const ConnectContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0px;
+`;
+
+const Connect = styled.a`
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+  color: black;
+`;
+
 function Register() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  /* const EmailRegex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; */
+  const EmailRegex =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  const NameRegex = /^[a-zA-Z]+$/;
+
+  if (isError || isSuccess) {
+    setTimeout(() => {
+      setIsSuccess(false);
+      setIsError(false);
+    }, 5000);
+  }
+
+  const registerHandler = async (e) => {
+    e.preventDefault();
+
+    if (!email.match(EmailRegex)) {
+      console.log("Please Provide a valid Email.");
+      setIsError(true);
+      return;
+    } else if (!firstName.match(NameRegex) || !lastName.match(NameRegex)) {
+      console.log("Name can not have numbers");
+      setIsError(true);
+      return;
+    } else if (username.length > 20) {
+      console.log("Username can not have more than 20 characters.");
+      setIsError(true);
+      return;
+    } else if (password.length < 8) {
+      console.log("The password should have at least 8 characters.");
+      setIsError(true);
+      return;
+    } else if (confirmPassword !== password) {
+      console.log("Password and the Confirm Password does not match.");
+      setIsError(true);
+      return;
+    }
+
+    const newUser = {
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+    };
+
+    try {
+      const res = await publicRequest.post("/auth/signup", newUser);
+      setIsSuccess(true);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+      setIsError(true);
+    }
+  };
+
   return (
     <Container>
       <BackgroundImage src={bg} />
@@ -101,16 +197,77 @@ function Register() {
           <TitleContainer>
             <Title>Create An Account</Title>
           </TitleContainer>
-          <Form>
-            <Input placeholder="First Name" />
-            <Input placeholder="Last Name" />
-            <Input placeholder="Email" />
-            <Input placeholder="Username" />
-            <Input placeholder="Password" />
-            <Input placeholder="Confirm Password" />
+          <Form onSubmit={registerHandler}>
+            <Input
+              type="text"
+              onChange={(e) => {
+                setFirstName(e.target.value);
+              }}
+              required
+              placeholder="First Name"
+            />
+            <Input
+              type="text"
+              onChange={(e) => {
+                setLastName(e.target.value);
+              }}
+              required
+              placeholder="Last Name"
+            />
+            <Input
+              type="email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              required
+              placeholder="Email"
+            />
+            <Input
+              type="text"
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+              required
+              placeholder="Username"
+            />
+            <Input
+              type="password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              required
+              placeholder="Password"
+            />
+            <Input
+              type="password"
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+              }}
+              required
+              placeholder="Confirm Password"
+            />
             <ButtonContainer>
-              <Button>CREATE</Button>
+              <Button type="submit">CREATE</Button>
+              {isError && (
+                <Error>
+                  Something Went Wrong! Please try again with a different email
+                  and username
+                </Error>
+              )}
+              {isSuccess && (
+                <Success>
+                  Registration Successful! Please Login to start shopping
+                </Success>
+              )}
             </ButtonContainer>
+            <ConnectContainer>
+              <Link to={"/"}>
+                <Connect>Go Back Home</Connect>
+              </Link>
+              <Link to={"/login"}>
+                <Connect>Sign In</Connect>
+              </Link>
+            </ConnectContainer>
           </Form>
         </Wrapper>
       </Content>

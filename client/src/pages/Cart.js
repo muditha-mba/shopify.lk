@@ -1,20 +1,21 @@
-import {
-  Add,
-  FavoriteBorderOutlined,
-  Remove,
-  ShoppingCartOutlined,
-} from "@material-ui/icons";
+import { Add, Remove, ShoppingCartOutlined } from "@material-ui/icons";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Logo from "../imgs/Logo/logo.png";
 import StripeCheckout from "react-stripe-checkout";
 import { userRequest } from "../requestMethods";
 import { useNavigate } from "react-router-dom";
+import {
+  increaseSingleProductQuantity,
+  decreaseSingleProductQuantity,
+  clearCart,
+} from "../redux/cartRedux";
+import emptyCart from "../imgs/empty/empty-cart.png";
 
 const KEY =
   "pk_test_51KdFBxLfpNjR8V9MTJ5U5nlc48g5vvSF39OPmQFxZJNzWZgPpFGINksPRAzU1xAQZFhN0b1Z99vKxIWei23teLPy00XCmtr1UV";
@@ -53,11 +54,6 @@ const TopButton = styled.button`
   ${mobile({ display: (props) => props.type === "filled" && "none" })}
 `;
 
-const TopTexts = styled.span`
-  display: flex;
-  align-items: center;
-`;
-
 const TopTextContainer = styled.div`
   display: flex;
   align-items: center;
@@ -94,6 +90,9 @@ const Product = styled.div`
 const ProductDetail = styled.div`
   flex: 2;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  ${mobile({ flexDirection: "column" })}
 `;
 
 const Image = styled.img`
@@ -107,9 +106,6 @@ const Details = styled.div`
   justify-content: space-around;
 `;
 
-const ProductName = styled.span``;
-
-const ProductId = styled.span``;
 const ProductColorContainer = styled.span`
   display: flex;
   align-items: center;
@@ -120,12 +116,15 @@ const ProductColor = styled.div`
   width: 20px;
   height: 20px;
   margin-left: 5px;
+  margin-top: 7px;
   border-radius: 50%;
   border: 1px solid gray;
   background-color: ${(props) => props.color};
 `;
 
-const ProductSize = styled.span``;
+const ProductInfo = styled.span`
+  margin-top: 7px;
+`;
 
 const PriceDetail = styled.div`
   flex: 1;
@@ -181,10 +180,23 @@ const SummaryItem = styled.div`
   font-weight: ${(props) => props.type === "total" && "500"};
   font-size: ${(props) => props.type === "total" && "24px"};
 `;
+const ImageContainer = styled.div``;
 
 const SummaryItemText = styled.span``;
 
 const SummaryItemPrice = styled.span``;
+
+const EmptyCartContainer = styled.div`
+  flex: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const EmptyCartImg = styled.img`
+  height: 50vh;
+  ${mobile({ height: "200px", width: "200px" })}
+`;
 
 const ButtonContainer = styled.div`
   width: 100%;
@@ -199,12 +211,11 @@ function Cart() {
   const shippingDiscount = cart.total > 0 ? 100 : 0;
   const [stripeToken, setStripeToken] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onToken = (token) => {
     setStripeToken(token);
   };
-
-  console.log(stripeToken);
 
   useEffect(() => {
     const makeRequest = async () => {
@@ -214,6 +225,8 @@ function Cart() {
           amount: cart.total * 100,
         });
         //reference props.location.state.data
+        dispatch(clearCart());
+
         navigate("/success", {
           state: {
             stripeData: res.data,
@@ -225,7 +238,9 @@ function Cart() {
       }
     };
     stripeToken && makeRequest();
-  }, [stripeToken, cart.total, navigate, cart]);
+  }, [stripeToken, cart.total, navigate, cart, dispatch]);
+
+  /* const handleIncreaseProductQuantity = () => {}; */
 
   return (
     <Container>
@@ -235,56 +250,79 @@ function Cart() {
         <Title>Your Cart</Title>
         <Top>
           <TopButton>continue shopping</TopButton>
-          <TopTexts>
-            <TopTextContainer type="cart">
-              <ShoppingCartOutlined style={{ color: "teal" }} />
-              <TopText>Shopping Cart(2)</TopText>
-            </TopTextContainer>
-            <TopTextContainer type="heart">
-              <FavoriteBorderOutlined style={{ color: "red" }} />
-              <TopText>Your Wishlist(0)</TopText>
-            </TopTextContainer>
-          </TopTexts>
-          <TopButton type="filled">checkout now</TopButton>
+
+          <TopTextContainer type="cart">
+            <ShoppingCartOutlined style={{ color: "teal" }} />
+            <TopText>Shopping Cart({cart.quantity})</TopText>
+          </TopTextContainer>
         </Top>
         <Bottom>
-          <Info>
-            {cart.products.map((product) => (
-              <Container key={product._id}>
-                <Product>
-                  <ProductDetail>
-                    <Image src={product.img} />
-                    <Details>
-                      <ProductName>
-                        <b>Product:</b> {product.title}
-                      </ProductName>
-                      <ProductId>
-                        <b>ID:</b> {product._id}
-                      </ProductId>
-                      <ProductColorContainer>
-                        <b>Color:</b>
-                        <ProductColor color={product.color} />
-                      </ProductColorContainer>
-                      <ProductSize>
-                        <b>Size:</b> {product.size}
-                      </ProductSize>
-                    </Details>
-                  </ProductDetail>
-                  <PriceDetail>
-                    <ProductAmountContainer>
-                      <Add />
-                      <ProductAmount>{product.quantity}</ProductAmount>
-                      <Remove />
-                    </ProductAmountContainer>
-                    <ProductPrice>
-                      Rs. {product.price * product.quantity}
-                    </ProductPrice>
-                  </PriceDetail>
-                </Product>
-                <Hr />
-              </Container>
-            ))}
-          </Info>
+          {cart.quantity > 0 ? (
+            <Info>
+              {cart.products.map((product, i) => (
+                <Container key={product._id}>
+                  <Product>
+                    <ProductDetail>
+                      <ImageContainer>
+                        <Image src={product.img} />
+                      </ImageContainer>
+                      <Details>
+                        <ProductInfo>
+                          <b>Product:</b> {product.title}
+                        </ProductInfo>
+                        <ProductInfo>
+                          <b>ID:</b> {product._id}
+                        </ProductInfo>
+                        <ProductColorContainer>
+                          <b>Color:</b>
+                          <ProductColor color={product.color} />
+                        </ProductColorContainer>
+                        <ProductInfo>
+                          <b>Size:</b> {product.size}
+                        </ProductInfo>
+                        <ProductInfo>
+                          <b>Price: Rs.</b> {product.price}
+                        </ProductInfo>
+                      </Details>
+                    </ProductDetail>
+                    <PriceDetail>
+                      <ProductAmountContainer>
+                        <Remove
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            dispatch(
+                              decreaseSingleProductQuantity({ index: i })
+                            );
+                          }}
+                        />
+                        <ProductAmount>{product.quantity}</ProductAmount>
+                        <Add
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            dispatch(
+                              increaseSingleProductQuantity({
+                                index: i,
+                                price: product.price,
+                                total: cart.total * 1 + product.price * 1,
+                              })
+                            );
+                          }}
+                        />
+                      </ProductAmountContainer>
+                      <ProductPrice>
+                        Rs. {product.price * product.quantity}
+                      </ProductPrice>
+                    </PriceDetail>
+                  </Product>
+                  <Hr />
+                </Container>
+              ))}
+            </Info>
+          ) : (
+            <EmptyCartContainer>
+              <EmptyCartImg src={emptyCart} />
+            </EmptyCartContainer>
+          )}
           <Summary>
             <SummaryTitle>Order Summary</SummaryTitle>
             <SummaryItem>

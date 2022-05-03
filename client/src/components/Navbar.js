@@ -1,13 +1,15 @@
-import { Search, ShoppingCartOutlined } from "@material-ui/icons";
+import { ExitToApp, Search, ShoppingCartOutlined } from "@material-ui/icons";
 import { Badge } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import logo from "../imgs/Logo/logo.png";
 import { mobile } from "../responsive";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/userRedux";
 
 const Container = styled.div`
+  background-color: #393939;
   height: 60px;
   ${mobile({ height: "50px" })}
 `;
@@ -25,27 +27,9 @@ const Left = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  ${mobile({ display: "none" })}
-`;
-
-const SearchContainer = styled.div`
-  border: 0.5px solid lightgrey;
-  display: flex;
-  align-items: center;
-  margin-left: 25px;
-  padding: 5px;
-`;
-
-const Input = styled.input`
-  border: none;
-  ${mobile({ width: "50px" })}
-`;
-
-const Center = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-left: 10px;
+  /* ${mobile({ display: "none" })} */
 `;
 
 const Logo = styled.img`
@@ -55,16 +39,19 @@ const Logo = styled.img`
 `;
 
 const Right = styled.div`
-  flex: 1;
+  flex: 3;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   /* padding-top: 10px; */
-  ${mobile({ justifyContent: "center", flex: 2 })}
+  ${mobile({ justifyContent: "flex-end", marginRight: "14px", flex: 2 })}
 `;
 
 const MenuItem = styled.div`
+  color: #fff;
   font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
   cursor: pointer;
   text-transform: uppercase;
   margin-left: 25px;
@@ -73,34 +60,66 @@ const MenuItem = styled.div`
 
 function Navbar() {
   const quantity = useSelector((state) => state.cart.quantity);
+  const navigator = useNavigate();
+  const user = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+
   return (
     <Container>
       <Wrapper>
         <Left>
-          <SearchContainer>
-            <Input />
-            <Search style={{ color: "gray", fontSize: 16 }} />
-          </SearchContainer>
-        </Left>
-        <Center>
           <Link to={"/"}>
             <Logo src={logo} />
           </Link>
-        </Center>
+        </Left>
         <Right>
-          <MenuItem>Register</MenuItem>
-          <MenuItem>Sign In</MenuItem>
-          <Link to={"/cart"}>
-            <MenuItem>
-              <Badge
-                overlap="rectangular"
-                badgeContent={quantity}
-                color="primary"
+          <MenuItem title="Search">
+            <Search />
+          </MenuItem>
+          {user ? (
+            <>
+              <MenuItem>My Profile</MenuItem>
+              <Link to={"/cart"}>
+                <MenuItem title="My Cart">
+                  <Badge
+                    overlap="rectangular"
+                    badgeContent={quantity}
+                    color="primary"
+                  >
+                    <ShoppingCartOutlined
+                      color="action"
+                      style={{ color: "#fff" }}
+                    />
+                  </Badge>
+                </MenuItem>
+              </Link>
+              <MenuItem title="Logout">
+                <ExitToApp
+                  onClick={() => {
+                    dispatch(logout());
+                    navigator("/");
+                  }}
+                />
+              </MenuItem>
+            </>
+          ) : (
+            <>
+              <MenuItem
+                onClick={() => {
+                  navigator("/register");
+                }}
               >
-                <ShoppingCartOutlined color="action" />
-              </Badge>
-            </MenuItem>
-          </Link>
+                Register
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigator("/login");
+                }}
+              >
+                Sign In
+              </MenuItem>
+            </>
+          )}
         </Right>
       </Wrapper>
     </Container>

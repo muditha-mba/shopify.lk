@@ -67,20 +67,20 @@ export const categories = [
   {
     id: 12346556765,
     img: category1,
-    title: "shirt",
-    cat: "shirt",
+    title: "Womens Fashion",
+    cat: "womens",
   },
   {
     id: 208357453,
     img: category2,
-    title: "Loungewear",
-    cat: "loungeware",
+    title: "Sports Wear",
+    cat: "sports",
   },
   {
     id: 35601478643,
     img: category3,
-    title: "Jackets",
-    cat: "jacket",
+    title: "Casual Wear",
+    cat: "casual",
   },
   {
     id: 128881177004,
@@ -97,8 +97,8 @@ export const categories = [
   {
     id: 356016664442,
     img: category6,
-    title: "suit styles",
-    cat: "suit",
+    title: "Mens Fashion",
+    cat: "mens",
   },
 ];
 
