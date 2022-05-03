@@ -4,7 +4,7 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
-import { mobile } from "../responsive";
+import { smallLap, tab } from "../responsive";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethods";
@@ -14,11 +14,18 @@ import { useDispatch, useSelector } from "react-redux";
 const Container = styled.div``;
 
 const Wrapper = styled.div`
+  background-color: #d9afd9;
+  background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
+  min-height: calc(100vh - 180px);
   padding: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  ${mobile({ padding: "10px", flexDirection: "column" })}
+  ${smallLap({
+    padding: "5px",
+    flexDirection: "column",
+    minHeight: "90vh",
+  })}
 `;
 
 const ImgContainer = styled.div`
@@ -29,10 +36,10 @@ const ImgContainer = styled.div`
 `;
 
 const Image = styled.img`
-  width: 60%;
-  height: 80vh;
+  width: 50%;
+  height: 50vh;
   object-fit: cover;
-  ${mobile({ height: "40vh", width: "100%" })}
+  ${smallLap({ height: "40vh", width: "100%" })}
 `;
 
 const InfoContainer = styled.div`
@@ -41,21 +48,26 @@ const InfoContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   flex: 1;
-  padding: 0px 50px;
-  ${mobile({ padding: "10px" })}
+  padding: 0px 0px 0px 10px;
+  ${smallLap({ padding: "10px" })}
 `;
 
 const Title = styled.h1`
-  font-weight: 100;
+  font-weight: 400;
+  ${smallLap({ fontSize: "25px" })}
 `;
 
 const Desc = styled.p`
+  font-weight: 400;
+  font-size: 18px;
   margin: 20px 0px;
+  ${smallLap({ fontSize: "15px" })}
 `;
 
 const Price = styled.span`
-  font-weight: 100;
+  font-weight: 300;
   font-size: 40px;
+  ${smallLap({ fontSize: "25px" })}
 `;
 
 const FilterContainer = styled.div`
@@ -64,18 +76,19 @@ const FilterContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  ${mobile({ width: "100%" })}
+  ${smallLap({ width: "100%", margin: "15px 0px" })}
 `;
 
 const Filter = styled.div`
   display: flex;
   align-items: center;
   margin: 10px 0px;
+  ${smallLap({ margin: "5px 0px" })}
 `;
 
 const FilterTitle = styled.span`
   font-size: 20px;
-  font-weight: 200;
+  font-weight: 400;
 `;
 
 const FilterColor = styled.div`
@@ -83,7 +96,7 @@ const FilterColor = styled.div`
   height: 20px;
   border-radius: 50%;
   background-color: ${(props) => props.color};
-  margin: 0px 5px;
+  margin: 5px;
   /* border: 1px solid gray; */
   cursor: pointer;
 `;
@@ -100,13 +113,15 @@ const AddContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  ${mobile({ width: "100%" })}
+  flex-wrap: wrap;
+  ${smallLap({ width: "100%" })}
 `;
 
 const AmountContainer = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
+  margin: 5px 5px 20px 5px;
 `;
 
 const Amount = styled.span`
@@ -122,17 +137,20 @@ const Amount = styled.span`
 
 const Button = styled.button`
   padding: 15px;
-  border: 2px solid teal;
-  background-color: #fff;
+
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 800;
   transition: all 0.4s ease;
   text-transform: uppercase;
+  margin-bottom: 20px;
+  border: 2px solid #000;
+  background-color: teal;
+  color: #fff;
 
   &:hover {
-    border: 2px solid #000;
-    background-color: teal;
-    color: #fff;
+    border: 2px solid teal;
+    background-color: #fff;
+    color: #000;
   }
 `;
 
@@ -194,71 +212,73 @@ function Product() {
   };
 
   return (
-    <Container>
+    <>
       <Navbar />
       <Announcement />
-      <Wrapper>
-        <ImgContainer>
-          <Image src={product.img} />
-        </ImgContainer>
-        <InfoContainer>
-          <Title>{product.title}</Title>
-          <Desc>{product.desc}</Desc>
-          <Price>Rs. {product.price}</Price>
-          <FilterContainer>
-            <Filter>
-              <FilterTitle>Color : </FilterTitle>
-              {product.color?.map((c) => (
-                <FilterColor
-                  style={
-                    color === c
-                      ? { border: "3px solid #4c4c4c" }
-                      : { border: "1px solid gray" }
-                  }
-                  key={c}
-                  color={c}
-                  onClick={() => setColor(c)}
-                />
-              ))}
-            </Filter>
-            <Filter>
-              <FilterTitle>Size : </FilterTitle>
-              <FilterSize
-                defaultValue={"DEFAULT"}
-                onChange={(e) => setSize(e.target.value)}
-              >
-                <FilterSizeOption value="DEFAULT" disabled>
-                  Select Size
-                </FilterSizeOption>
-                {product.size?.map((size) => (
-                  <FilterSizeOption key={size}>
-                    {" "}
-                    {size.toUpperCase()}
-                  </FilterSizeOption>
+      <Container>
+        <Wrapper>
+          <ImgContainer>
+            <Image src={product.img} />
+          </ImgContainer>
+          <InfoContainer>
+            <Title>{product.title}</Title>
+            <Desc>{product.desc}</Desc>
+            <Price>Rs. {product.price}</Price>
+            <FilterContainer>
+              <Filter>
+                <FilterTitle>Color : </FilterTitle>
+                {product.color?.map((c) => (
+                  <FilterColor
+                    style={
+                      color === c
+                        ? { border: "3px solid #4c4c4c" }
+                        : { border: "1px solid gray" }
+                    }
+                    key={c}
+                    color={c}
+                    onClick={() => setColor(c)}
+                  />
                 ))}
-              </FilterSize>
-            </Filter>
-          </FilterContainer>
-          <AddContainer>
-            <AmountContainer>
-              <Remove
-                onClick={() => handleQuantity("dec")}
-                style={{ cursor: "pointer" }}
-              />
-              <Amount>{quantity}</Amount>
-              <Add
-                onClick={() => handleQuantity("inc")}
-                style={{ cursor: "pointer" }}
-              />
-            </AmountContainer>
-            <Button onClick={handleCartClick}>Add to cart</Button>
-          </AddContainer>
-          {isError && <Error>Please Login to Start Shopping!</Error>}
-        </InfoContainer>
-      </Wrapper>
+              </Filter>
+              <Filter>
+                <FilterTitle>Size : </FilterTitle>
+                <FilterSize
+                  defaultValue={"DEFAULT"}
+                  onChange={(e) => setSize(e.target.value)}
+                >
+                  <FilterSizeOption value="DEFAULT" disabled>
+                    Select Size
+                  </FilterSizeOption>
+                  {product.size?.map((size) => (
+                    <FilterSizeOption key={size}>
+                      {" "}
+                      {size.toUpperCase()}
+                    </FilterSizeOption>
+                  ))}
+                </FilterSize>
+              </Filter>
+            </FilterContainer>
+            <AddContainer>
+              <AmountContainer>
+                <Remove
+                  onClick={() => handleQuantity("dec")}
+                  style={{ cursor: "pointer" }}
+                />
+                <Amount>{quantity}</Amount>
+                <Add
+                  onClick={() => handleQuantity("inc")}
+                  style={{ cursor: "pointer" }}
+                />
+              </AmountContainer>
+              <Button onClick={handleCartClick}>Add to cart</Button>
+            </AddContainer>
+            {isError && <Error>Please Login to Start Shopping!</Error>}
+          </InfoContainer>
+        </Wrapper>
+      </Container>
       <Newsletter />
       <Footer />
-    </Container>
+    </>
   );
 }
 

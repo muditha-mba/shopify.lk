@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import CircleAnimation from "../Animations/RegisterCircleAnimi";
 import bg from "../imgs/register/regBG.jpg";
-import { mobile } from "../responsive";
+import { mobile, smallLap, tab } from "../responsive";
 import { publicRequest } from "../requestMethods";
 import { Link } from "react-router-dom";
 
@@ -37,6 +37,8 @@ const Wrapper = styled.div`
   /* background-color: #ffffff82; */
   background-color: #ffffffb1;
   border-radius: 20px;
+  ${smallLap({ width: "40%" })}
+  ${tab({ width: "60%" })}
   ${mobile({ width: "75%" })}
 `;
 

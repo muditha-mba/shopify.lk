@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { mobile } from "../responsive";
+import { mobile, tab } from "../responsive";
 
 const Container = styled.div`
   flex: 1;
@@ -8,7 +8,7 @@ const Container = styled.div`
   height: 70vh;
   min-width: 375px;
   position: relative;
-  ${mobile({ minWidth: "280px" })}
+  ${tab({ minWidth: "280px" })}
 `;
 
 const Image = styled.img`

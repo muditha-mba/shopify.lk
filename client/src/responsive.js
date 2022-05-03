@@ -7,3 +7,18 @@ export const mobile = (props) => {
     }
   `;
 };
+
+export const smallLap = (props) => {
+  return css`
+    @media only screen and (max-width: 995px) {
+      ${props}
+    }
+  `;
+};
+export const tab = (props) => {
+  return css`
+    @media only screen and (max-width: 630px) {
+      ${props}
+    }
+  `;
+};

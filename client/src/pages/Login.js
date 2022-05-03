@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import CircleAnimation from "../Animations/LoginCircleAnimi";
 import bg from "../imgs/login/loginBG.jpg";
-import { mobile } from "../responsive";
+import { mobile, tab, smallLap } from "../responsive";
 import { loginAPICall } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -34,10 +34,12 @@ const Content = styled.div`
 
 const Wrapper = styled.div`
   padding: 20px 30px;
-  width: 25%;
+  width: 30%;
   /* background-color: #ffffff82; */
   background-color: #ffffffb1;
   border-radius: 20px;
+  ${smallLap({ width: "40%" })}
+  ${tab({ width: "60%" })}
   ${mobile({ width: "75%" })}
 `;
 

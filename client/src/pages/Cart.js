@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { mobile } from "../responsive";
+import { mobile, smallLap, tab } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Logo from "../imgs/Logo/logo.png";
@@ -24,7 +24,7 @@ const Container = styled.div``;
 
 const Wrapper = styled.div`
   padding: 20px;
-  ${mobile({ padding: "10px" })}
+  ${tab({ padding: "10px" })}
 `;
 
 const Title = styled.h1`
@@ -38,7 +38,7 @@ const Top = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  ${mobile({ flexDirection: "column" })}
+  ${tab({ flexDirection: "column" })}
 `;
 
 const TopButton = styled.button`
@@ -62,7 +62,7 @@ const TopTextContainer = styled.div`
   border: ${(props) =>
     props.type === "cart" ? "1px solid teal" : "1px solid red"};
   padding: 5px;
-  ${mobile({ margin: "20px 20px 0px 20px", fontSize: "13px" })}
+  ${tab({ margin: "20px 20px 0px 20px", fontSize: "13px" })}
 `;
 
 const TopText = styled.span`
@@ -74,7 +74,7 @@ const TopText = styled.span`
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
-  ${mobile({ flexDirection: "column" })}
+  ${smallLap({ flexDirection: "column" })}
 `;
 
 const Info = styled.div`
@@ -84,7 +84,7 @@ const Info = styled.div`
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
-  ${mobile({ flexDirection: "column" })}
+  ${tab({ flexDirection: "column" })}
 `;
 
 const ProductDetail = styled.div`
@@ -92,7 +92,7 @@ const ProductDetail = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${mobile({ flexDirection: "column" })}
+  ${tab({ flexDirection: "column" })}
 `;
 
 const Image = styled.img`
@@ -152,7 +152,7 @@ const ProductAmount = styled.span`
 const ProductPrice = styled.span`
   font-size: 30px;
   font-weight: 200;
-  ${mobile({ marginBottom: "20px" })}
+  ${tab({ marginBottom: "20px" })}
 `;
 
 const Hr = styled.hr`
@@ -249,7 +249,13 @@ function Cart() {
       <Wrapper>
         <Title>Your Cart</Title>
         <Top>
-          <TopButton>continue shopping</TopButton>
+          <TopButton
+            onClick={() => {
+              navigate("/search");
+            }}
+          >
+            continue shopping
+          </TopButton>
 
           <TopTextContainer type="cart">
             <ShoppingCartOutlined style={{ color: "teal" }} />

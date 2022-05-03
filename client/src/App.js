@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Success from "./pages/Success";
 import { useSelector } from "react-redux";
 import PageNotFound from "./pages/PageNotFound";
+import Search from "./pages/Search";
 
 const App = () => {
   /* const currentUser = JSON.parse(
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="products/:category" element={<ProductList />} />
         <Route path="product/:id" element={<Product />} />
+        <Route path="search" element={<Search />} />
         <Route path="cart" element={user ? <Cart /> : <Navigate to={"/"} />} />
         <Route
           path="login"

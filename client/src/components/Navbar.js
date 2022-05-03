@@ -3,7 +3,7 @@ import { Badge } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import logo from "../imgs/Logo/logo.png";
-import { mobile } from "../responsive";
+import { mobile, tab } from "../responsive";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userRedux";
@@ -11,7 +11,7 @@ import { logout } from "../redux/userRedux";
 const Container = styled.div`
   background-color: #393939;
   height: 60px;
-  ${mobile({ height: "50px" })}
+  ${tab({ height: "50px" })}
 `;
 
 const Wrapper = styled.div`
@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  ${mobile({ padding: "10px 0px" })}
+  ${tab({ padding: "10px 0px" })}
 `;
 
 const Left = styled.div`
@@ -29,13 +29,13 @@ const Left = styled.div`
   align-items: center;
   justify-content: flex-start;
   margin-left: 10px;
-  /* ${mobile({ display: "none" })} */
+  /* ${tab({ display: "none" })} */
 `;
 
 const Logo = styled.img`
   height: 60px;
   cursor: pointer;
-  ${mobile({ height: "35px" })}
+  ${tab({ height: "35px" })}
 `;
 
 const Right = styled.div`
@@ -44,7 +44,7 @@ const Right = styled.div`
   align-items: center;
   justify-content: flex-end;
   /* padding-top: 10px; */
-  ${mobile({ justifyContent: "flex-end", marginRight: "14px", flex: 2 })}
+  ${tab({ justifyContent: "flex-end", marginRight: "14px", flex: 2 })}
 `;
 
 const MenuItem = styled.div`
@@ -55,7 +55,7 @@ const MenuItem = styled.div`
   cursor: pointer;
   text-transform: uppercase;
   margin-left: 25px;
-  ${mobile({ fontSize: "12px", marginLeft: "10px" })}
+  ${tab({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
 function Navbar() {
@@ -73,9 +73,11 @@ function Navbar() {
           </Link>
         </Left>
         <Right>
-          <MenuItem title="Search">
-            <Search />
-          </MenuItem>
+          <Link to={"/search"}>
+            <MenuItem title="Search">
+              <Search />
+            </MenuItem>
+          </Link>
           {user ? (
             <>
               <MenuItem>My Profile</MenuItem>

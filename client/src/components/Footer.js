@@ -12,6 +12,9 @@ import { mobile } from "../responsive";
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   ${mobile({ flexDirection: "column" })}
 `;
 
@@ -20,6 +23,7 @@ const Left = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
+  min-width: 270px;
   ${mobile({ alignItems: "center" })}
 `;
 
@@ -58,6 +62,7 @@ const SocialIcon = styled.div`
 const Center = styled.div`
   flex: 1;
   padding: 20px;
+  min-width: 270px;
 `;
 
 const Title = styled.h3`
@@ -80,6 +85,7 @@ const ListItem = styled.li`
 const Right = styled.div`
   flex: 1;
   padding: 20px;
+  min-width: 270px;
   ${mobile({ backgroundColor: "#eee" })}
 `;
 
