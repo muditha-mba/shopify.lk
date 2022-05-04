@@ -14,11 +14,18 @@ Built using modern technologies: React.js, React Router v6, Styled Components, R
 8. A logged in user can view their profile.
 9. A logged in user can checkout using stripe checkout.
 
-# Functionalities Like view ordered products, view order status, cancel order, edit user profile and admin panel should be implemented to complete this project.
+# Future improvements
+
+Functionalities Like view ordered products, view order status, cancel order, edit user profile and admin panel should be implemented to complete this project.
+
+# Dependencies
+
+In order to run this app Node.js should be installed in the computer.
+use this link to install node (LTS version) => https://nodejs.org/en/
 
 # How to run the App.
 
-Before anything past the .env file sent via email inside the api folder
+Before anything past the .env file sent via email inside the api folder (file name should be exactly '.env')
 Then before starting the react App Navigate to the api folder using the Terminal and type the following command to install npm packages for the api => npm install
 
 After all the packages are installed successfuly in the api folder, type the following command to start the server => npm start
@@ -26,3 +33,13 @@ After all the packages are installed successfuly in the api folder, type the fol
 After the server is running successfuly without stopping the server, Use another Terminal and Navigate to the client folder then type the following command to install all the npm packages in the client folder for the react App => npm install
 
 After all the packages are installed successfuly in the client folder, type the following command to start the react app => npm start
+
+# Login data
+
+use this login data if interested.
+email: praveen@gmail.com
+password: pass1234
+
+# Search keys
+
+use one of these keys to search products => mens, womens, sports, partyware, short, frock, beach, casual, shirt, jean
