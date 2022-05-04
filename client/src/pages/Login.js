@@ -133,6 +133,7 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     loginAPICall(dispatch, { email, password });
+    document.getElementById("login-form").reset();
   };
 
   return (
@@ -143,7 +144,7 @@ function Login() {
           <TitleContainer>
             <Title>Sign In</Title>
           </TitleContainer>
-          <Form>
+          <Form id="login-form">
             <Input
               type="email"
               placeholder="Email"

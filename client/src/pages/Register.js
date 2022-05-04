@@ -127,7 +127,6 @@ const Connect = styled.a`
 function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -152,31 +151,23 @@ function Register() {
     e.preventDefault();
 
     if (!email.match(EmailRegex)) {
-      console.log("Please Provide a valid Email.");
-      setIsError(true);
+      alert("Please Provide a valid Email.");
       return;
     } else if (!firstName.match(NameRegex) || !lastName.match(NameRegex)) {
-      console.log("Name can not have numbers");
-      setIsError(true);
-      return;
-    } else if (username.length > 20) {
-      console.log("Username can not have more than 20 characters.");
-      setIsError(true);
+      alert("Name can not have numbers");
       return;
     } else if (password.length < 8) {
-      console.log("The password should have at least 8 characters.");
-      setIsError(true);
+      alert("The password should have at least 8 characters.");
       return;
     } else if (confirmPassword !== password) {
-      console.log("Password and the Confirm Password does not match.");
-      setIsError(true);
+      alert("Password and the Confirm Password does not match.");
       return;
     }
 
     const newUser = {
       firstName,
       lastName,
-      username,
+      username: firstName.toLowerCase().concat(".", lastName.toLowerCase()),
       email,
       password,
     };
@@ -185,6 +176,7 @@ function Register() {
       const res = await publicRequest.post("/auth/signup", newUser);
       setIsSuccess(true);
       console.log(res);
+      document.getElementById("register-form").reset();
     } catch (err) {
       console.log(err);
       setIsError(true);
@@ -199,7 +191,7 @@ function Register() {
           <TitleContainer>
             <Title>Create An Account</Title>
           </TitleContainer>
-          <Form onSubmit={registerHandler}>
+          <Form id="register-form" onSubmit={registerHandler}>
             <Input
               type="text"
               onChange={(e) => {
@@ -223,14 +215,6 @@ function Register() {
               }}
               required
               placeholder="Email"
-            />
-            <Input
-              type="text"
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
-              required
-              placeholder="Username"
             />
             <Input
               type="password"
