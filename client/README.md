@@ -18,7 +18,8 @@ Built using modern technologies: React.js, React Router v6, Styled Components, R
 
 # How to run the App.
 
-Before starting the react App Navigate to the api folder using the Terminal and type the following command to install npm packages for the api => npm install
+Before anything past the .env file sent via email inside the api folder
+Then before starting the react App Navigate to the api folder using the Terminal and type the following command to install npm packages for the api => npm install
 
 After all the packages are installed successfuly in the api folder, type the following command to start the server => npm start
 
