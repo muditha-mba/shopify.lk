@@ -3,7 +3,7 @@ import { Badge } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import logo from "../imgs/Logo/logo.png";
-import { mobile, tab } from "../responsive";
+import { tab } from "../responsive";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userRedux";
@@ -80,7 +80,13 @@ function Navbar() {
           </Link>
           {user ? (
             <>
-              <MenuItem>My Profile</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigator("/profile");
+                }}
+              >
+                My Profile
+              </MenuItem>
               <Link to={"/cart"}>
                 <MenuItem title="My Cart">
                   <Badge

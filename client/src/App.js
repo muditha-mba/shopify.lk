@@ -9,6 +9,7 @@ import Success from "./pages/Success";
 import { useSelector } from "react-redux";
 import PageNotFound from "./pages/PageNotFound";
 import Search from "./pages/Search";
+import Profile from "./pages/Profile";
 
 const App = () => {
   /* const currentUser = JSON.parse(
@@ -24,6 +25,10 @@ const App = () => {
         <Route path="products/:category" element={<ProductList />} />
         <Route path="product/:id" element={<Product />} />
         <Route path="search" element={<Search />} />
+        <Route
+          path="profile"
+          element={user ? <Profile /> : <Navigate to={"/"} />}
+        />
         <Route path="cart" element={user ? <Cart /> : <Navigate to={"/"} />} />
         <Route
           path="login"
